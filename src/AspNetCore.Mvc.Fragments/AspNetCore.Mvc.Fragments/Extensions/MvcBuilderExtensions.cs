@@ -19,6 +19,7 @@ namespace AspNetCore.Mvc.Fragments.Extensions
 
             optionsBuilder?.Invoke(fragmentMvcBuilderOptions);
 
+            mvcBuilder.Services.AddScoped(typeof(IViewRenderer), fragmentMvcBuilderOptions.ViewRendererType);
             mvcBuilder.Services.AddScoped(typeof(IFragmentRenderer), fragmentMvcBuilderOptions.FragmentRendererType);
             mvcBuilder.Services.AddScoped(typeof(IFragmentResolver), fragmentMvcBuilderOptions.FragmentResolverType);
             return mvcBuilder.AddMvcOptions(option => option.Filters.Add(new FragmentResultFilter()));
