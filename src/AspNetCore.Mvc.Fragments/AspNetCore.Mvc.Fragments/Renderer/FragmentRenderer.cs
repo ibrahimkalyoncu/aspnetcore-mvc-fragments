@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using AspNetCore.Mvc.Fragments.Context;
 using AspNetCore.Mvc.Fragments.Extensions;
 
 namespace AspNetCore.Mvc.Fragments.Renderer

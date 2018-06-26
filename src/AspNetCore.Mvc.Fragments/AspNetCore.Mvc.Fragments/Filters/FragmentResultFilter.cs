@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using AspNetCore.Mvc.Fragments.Renderer;
 using Microsoft.AspNetCore.Mvc.Filters;
+using AspNetCore.Mvc.Fragments.Context;
+using AspNetCore.Mvc.Fragments.Renderer;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AspNetCore.Mvc.Fragments.Filters
@@ -15,12 +15,12 @@ namespace AspNetCore.Mvc.Fragments.Filters
 
         public void OnResultExecuted(ResultExecutedContext context)
         {
-            context.HttpContext.Response.Body.FlushAsync();
-            
-            if (context.HttpContext.Items[Constants.HttpContexItemsFragmentCollectionKey] is List<FragmentContext> contexts && contexts.Any())
+            var fragmentContextProvider = context.HttpContext.RequestServices.GetService<IFragmentContextProvider>();
+            var fragmentContexts = fragmentContextProvider?.GetContexts()?.ToList();
+            if (fragmentContexts != null && fragmentContexts.Any())
             {
                 IFragmentRenderer renderer = context.HttpContext.RequestServices.GetService<IFragmentRenderer>();
-                Task.WaitAll(contexts.Select(renderer.RenderAsync).ToArray());
+                Task.WaitAll(fragmentContexts.Select(renderer.RenderAsync).ToArray());
             }
         }
     }

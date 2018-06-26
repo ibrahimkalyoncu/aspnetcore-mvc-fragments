@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Reflection;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using System.Linq;
 using AspNetCore.Mvc.Fragments.Attributes;
+using AspNetCore.Mvc.Fragments.Context;
 using AspNetCore.Mvc.Fragments.Extensions;
 using AspNetCore.Mvc.Fragments.Renderer;
 using AspNetCore.Mvc.Fragments.Resolver;
@@ -18,8 +18,8 @@ namespace AspNetCore.Mvc.Fragments.TagHelpers
     public class FragmentTagHelper : TagHelper
     {
         private readonly IFragmentResolver _fragmentResolver;
-        private readonly IFragmentRenderer _fragmentRenderer;
         private readonly IViewRenderer _viewRenderer;
+        private readonly IFragmentContextProvider _fragmentContextProvider;
 
         [ViewContext]
         public ViewContext ViewContext { get; set; }
@@ -27,11 +27,11 @@ namespace AspNetCore.Mvc.Fragments.TagHelpers
         public string Name { get; set; }
         public object Model { get; set; }
 
-        public FragmentTagHelper(IFragmentResolver fragmentResolver, IFragmentRenderer fragmentRenderer, IViewRenderer viewRenderer)
+        public FragmentTagHelper(IFragmentResolver fragmentResolver, IViewRenderer viewRenderer, IFragmentContextProvider fragmentContextProvider)
         {
             _fragmentResolver = fragmentResolver;
-            _fragmentRenderer = fragmentRenderer;
             _viewRenderer = viewRenderer;
+            _fragmentContextProvider = fragmentContextProvider;
         }
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
@@ -69,7 +69,7 @@ namespace AspNetCore.Mvc.Fragments.TagHelpers
                 output.Attributes.SetAttribute(Constants.HtmlIdAttribute, fragmentContext.PlaceHolderId);
                 output.TagMode = TagMode.StartTagAndEndTag;
 
-                ((ViewContext.HttpContext.Items[Constants.HttpContexItemsFragmentCollectionKey] = ViewContext.HttpContext.Items[Constants.HttpContexItemsFragmentCollectionKey] ?? new List<FragmentContext>()) as List<FragmentContext>)?.Add(fragmentContext);
+                _fragmentContextProvider.AddContext(fragmentContext);
             }
         }
 

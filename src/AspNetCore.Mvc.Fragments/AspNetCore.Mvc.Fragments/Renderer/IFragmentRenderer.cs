@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using AspNetCore.Mvc.Fragments.Context;
 
 namespace AspNetCore.Mvc.Fragments.Renderer
 {

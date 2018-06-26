@@ -1,4 +1,5 @@
 ﻿using System;
+using AspNetCore.Mvc.Fragments.Context;
 using AspNetCore.Mvc.Fragments.Filters;
 using AspNetCore.Mvc.Fragments.Renderer;
 using AspNetCore.Mvc.Fragments.Resolver;
@@ -22,6 +23,7 @@ namespace AspNetCore.Mvc.Fragments.Extensions
             mvcBuilder.Services.AddScoped(typeof(IViewRenderer), fragmentMvcBuilderOptions.ViewRendererType);
             mvcBuilder.Services.AddScoped(typeof(IFragmentRenderer), fragmentMvcBuilderOptions.FragmentRendererType);
             mvcBuilder.Services.AddScoped(typeof(IFragmentResolver), fragmentMvcBuilderOptions.FragmentResolverType);
+            mvcBuilder.Services.AddScoped(typeof(IFragmentContextProvider), fragmentMvcBuilderOptions.FragmentContextProviderType);
             return mvcBuilder.AddMvcOptions(option => option.Filters.Add(new FragmentResultFilter()));
         }
     }

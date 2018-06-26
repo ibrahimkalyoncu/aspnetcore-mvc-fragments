@@ -1,8 +1,7 @@
 ﻿using System.IO;
 using AspNetCore.Mvc.Fragments.Attributes;
-using Microsoft.AspNetCore.Http;
 
-namespace AspNetCore.Mvc.Fragments.Renderer
+namespace AspNetCore.Mvc.Fragments.Context
 {
     public class FragmentContext
     {
