@@ -4,7 +4,10 @@ using AspNetCore.Mvc.Fragments.Demo.Services;
 
 namespace AspNetCore.Mvc.Fragments.Demo.Fragments.Header
 {
-    [FragmentOptions(PlaceHolderViewName = "Fragments/Header/PlaceHolder", PostScripts = new[] { "scripts/fragments/header.js" }, Styles = new[] { "styles/fragments.css", "styles/fragments/header.css" })]
+    [FragmentOptions(
+        PlaceHolderViewName = "Fragments/Header/PlaceHolder", 
+        PostScripts = new[] { "scripts/fragments/header.js" }, 
+        Styles = new[] { "styles/fragments.css", "styles/fragments/header.css", "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" })]
     public class HeaderFragment : Fragment
     {
         private readonly IAuthenticationService _authenticationService;

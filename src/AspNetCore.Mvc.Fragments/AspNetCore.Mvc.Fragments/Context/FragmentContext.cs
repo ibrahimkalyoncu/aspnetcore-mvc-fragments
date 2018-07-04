@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using AspNetCore.Mvc.Fragments.Attributes;
+using AspNetCore.Mvc.Fragments.Options;
 
 namespace AspNetCore.Mvc.Fragments.Context
 {
@@ -9,6 +10,6 @@ namespace AspNetCore.Mvc.Fragments.Context
         public Stream OutputStream { get; set; }
         public object Model { get; set; }
         public string PlaceHolderId { get; set; }
-        public FragmentOptionsAttribute FragmentOptions { get; set; }
+        public IFragmentOptions FragmentOptions { get; set; }
     }
 }

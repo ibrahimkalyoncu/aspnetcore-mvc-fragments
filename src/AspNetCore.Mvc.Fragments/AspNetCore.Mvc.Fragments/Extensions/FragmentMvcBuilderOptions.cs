@@ -1,5 +1,6 @@
 ﻿using System;
 using AspNetCore.Mvc.Fragments.Context;
+using AspNetCore.Mvc.Fragments.Options;
 using AspNetCore.Mvc.Fragments.Renderer;
 using AspNetCore.Mvc.Fragments.Resolver;
 
@@ -11,6 +12,7 @@ namespace AspNetCore.Mvc.Fragments.Extensions
         internal Type FragmentRendererType { get; private set; }
         internal Type ViewRendererType { get; private set; }
         internal Type FragmentContextProviderType { get; private set; }
+        internal Type FragmentOptionsProviderType { get; private set; }
 
         public FragmentMvcBuilderOptions()
         {
@@ -18,6 +20,7 @@ namespace AspNetCore.Mvc.Fragments.Extensions
             FragmentRendererType = typeof(FragmentRenderer);
             ViewRendererType = typeof(ViewRenderer);
             FragmentContextProviderType = typeof(FragmentContextProvider);
+            FragmentOptionsProviderType = typeof(FragmentOptionsProvider);
         }
 
         public void SetFragmentResolver<T>() where T : IFragmentResolver
@@ -38,6 +41,11 @@ namespace AspNetCore.Mvc.Fragments.Extensions
         public void SetFragmentContextProvider<T>() where T : IFragmentContextProvider
         {
             FragmentContextProviderType = typeof(T);
+        }
+
+        public void SetFragmentOptionsProvider<T>() where T : IFragmentOptionsProvider
+        {
+            FragmentOptionsProviderType = typeof(T);
         }
     }
 }

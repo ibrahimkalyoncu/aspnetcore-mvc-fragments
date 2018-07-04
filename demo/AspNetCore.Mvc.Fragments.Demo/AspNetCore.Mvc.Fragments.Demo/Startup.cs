@@ -25,7 +25,7 @@ namespace AspNetCore.Mvc.Fragments.Demo
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseStaticFiles().UseMvc(builder => builder.MapRoute("Default", "{controller=home}/{action=index}"));
+            app.UseStaticFiles().UseMvc(builder => builder.MapRoute("Default", "{controller=home}/{action=index}").MapFragmentRoute());
         }
     }
 }

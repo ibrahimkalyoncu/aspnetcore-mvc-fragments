@@ -1,8 +1,9 @@
 ﻿using System;
+using AspNetCore.Mvc.Fragments.Options;
 
 namespace AspNetCore.Mvc.Fragments.Attributes
 {
-    public class FragmentOptionsAttribute : Attribute
+    public class FragmentOptionsAttribute : Attribute, IFragmentOptions
     {
         public bool IsSync { get; set; }
         public bool IsSyncOnAjax { get; set; }

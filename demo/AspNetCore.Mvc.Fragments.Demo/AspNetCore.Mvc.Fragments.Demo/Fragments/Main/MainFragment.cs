@@ -4,7 +4,9 @@ using AspNetCore.Mvc.Fragments.Demo.Services;
 
 namespace AspNetCore.Mvc.Fragments.Demo.Fragments.Main
 {
-    [FragmentOptions(PlaceHolderViewName = "Fragments/Main/PlaceHolder", Styles = new[] { "/styles/main.css" })]
+    [FragmentOptions(
+        PlaceHolderViewName = "Fragments/Main/PlaceHolder", 
+        Styles = new[] { "/styles/main.css", "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" })]
     public class MainFragment : Fragment
     {
         private readonly IContentService _contentService;
