@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Reflection;
 using AspNetCore.Mvc.Fragments.Context;
-using AspNetCore.Mvc.Fragments.Controllers;
+using AspNetCore.Mvc.Fragments.Datasource;
 using AspNetCore.Mvc.Fragments.Filters;
 using AspNetCore.Mvc.Fragments.Options;
+using AspNetCore.Mvc.Fragments.Registry;
 using AspNetCore.Mvc.Fragments.Renderer;
 using AspNetCore.Mvc.Fragments.Resolver;
 using Microsoft.AspNetCore.Mvc.Razor;
@@ -30,7 +31,12 @@ namespace AspNetCore.Mvc.Fragments.Extensions
             mvcBuilder.Services.AddScoped(typeof(IFragmentRenderer), fragmentMvcBuilderOptions.FragmentRendererType);
             mvcBuilder.Services.AddScoped(typeof(IFragmentResolver), fragmentMvcBuilderOptions.FragmentResolverType);
             mvcBuilder.Services.AddScoped(typeof(IFragmentContextProvider), fragmentMvcBuilderOptions.FragmentContextProviderType);
-            mvcBuilder.Services.AddScoped(typeof(IFragmentOptionsProvider), fragmentMvcBuilderOptions.FragmentOptionsProviderType);
+            mvcBuilder.Services.AddSingleton(typeof(IFragmentOptionsProvider), fragmentMvcBuilderOptions.FragmentOptionsProviderType);
+
+            var fragmentRegistry = new FragmentRegistry();
+            fragmentRegistry.AddDatasource(new FragmentAssamblyDatasource(Assembly.GetEntryAssembly()));
+            mvcBuilder.Services.AddSingleton(typeof(IFragmentRegistry),fragmentRegistry);
+
             return mvcBuilder.AddMvcOptions(option => option.Filters.Add(new FragmentResultFilter()));
         }
     }

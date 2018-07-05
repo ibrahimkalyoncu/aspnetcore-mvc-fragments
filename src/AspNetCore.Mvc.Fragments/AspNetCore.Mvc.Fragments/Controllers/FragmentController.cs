@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
-using AspNetCore.Mvc.Fragments.Attributes;
 using AspNetCore.Mvc.Fragments.Context;
 using AspNetCore.Mvc.Fragments.Options;
+using AspNetCore.Mvc.Fragments.Registry;
 using AspNetCore.Mvc.Fragments.Renderer;
 using AspNetCore.Mvc.Fragments.Resolver;
 using AspNetCore.Mvc.Fragments.Views;
@@ -20,18 +19,30 @@ namespace AspNetCore.Mvc.Fragments.Controllers
         private readonly IFragmentRenderer _fragmentRenderer;
         private readonly IFragmentOptionsProvider _fragmentOptionsProvider;
         private readonly IViewRenderer _viewRenderer;
+        private readonly IFragmentRegistry _fragmentRegistry;
 
-        public FragmentController(IFragmentResolver fragmentResolver, IFragmentRenderer fragmentRenderer, IFragmentOptionsProvider fragmentOptionsProvider, IViewRenderer viewRenderer)
+        public FragmentController(IFragmentResolver fragmentResolver, 
+            IFragmentRenderer fragmentRenderer, 
+            IFragmentOptionsProvider fragmentOptionsProvider, 
+            IViewRenderer viewRenderer, 
+            IFragmentRegistry fragmentRegistry)
         {
             _fragmentResolver = fragmentResolver;
             _fragmentRenderer = fragmentRenderer;
             _fragmentOptionsProvider = fragmentOptionsProvider;
             _viewRenderer = viewRenderer;
+            _fragmentRegistry = fragmentRegistry;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> List()
+        {
+            return await Task.FromResult(Json(_fragmentRegistry.GetAll()));
         }
 
         [HttpGet]
         [HttpPost]
-        public async Task<IActionResult> Index([FromRoute]string name, [FromQuery][FromBody]dynamic model)
+        public async Task<IActionResult> Preview([FromRoute]string name, [FromQuery][FromBody]dynamic model)
         {
             if (Request.Method == "GET")
             {
@@ -45,13 +56,6 @@ namespace AspNetCore.Mvc.Fragments.Controllers
 
             return await Task.FromResult(View(new FragmentViewModel { FragmentModel = model, FragmentName = name }));
         }
-
-        //[HttpPost]
-        //public async Task<IActionResult> Index([FromRoute]string name, [FromBody]dynamic model)
-        //{
-        //    return await Task.FromResult(View(new FragmentViewModel { FragmentModel = model, FragmentName = name }));
-        //}
-
 
         [HttpPost]
         public async Task<IActionResult> Content([FromRoute]string name, [FromBody]dynamic model)

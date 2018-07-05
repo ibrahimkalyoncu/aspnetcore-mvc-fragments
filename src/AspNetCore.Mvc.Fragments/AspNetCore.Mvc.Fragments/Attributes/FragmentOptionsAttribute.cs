@@ -1,5 +1,6 @@
 ﻿using System;
 using AspNetCore.Mvc.Fragments.Options;
+using Newtonsoft.Json;
 
 namespace AspNetCore.Mvc.Fragments.Attributes
 {
@@ -29,5 +30,8 @@ namespace AspNetCore.Mvc.Fragments.Attributes
             get => _postScripts ?? (_postScripts = new string[0]);
             set => _postScripts = value;
         }
+
+        [JsonIgnore]
+        public override object TypeId => base.TypeId;
     }
 }
