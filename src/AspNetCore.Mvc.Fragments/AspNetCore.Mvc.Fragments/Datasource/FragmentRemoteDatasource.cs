@@ -55,7 +55,7 @@ namespace AspNetCore.Mvc.Fragments.Datasource
             {
                 if (urlArray[i].StartsWith("http") == false)
                 {
-                    urlArray[i] = new UriBuilder(fragmetSourceUri.Host) { Path = urlArray[i] }.Uri.ToString();
+                    urlArray[i] = new UriBuilder(fragmetSourceUri.Authority) { Path = urlArray[i] }.Uri.ToString();
                 }
             }
         }
