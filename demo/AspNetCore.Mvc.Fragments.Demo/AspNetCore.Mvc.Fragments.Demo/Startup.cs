@@ -2,7 +2,9 @@
 using AspNetCore.Mvc.Fragments.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace AspNetCore.Mvc.Fragments.Demo
 {
@@ -14,17 +16,14 @@ namespace AspNetCore.Mvc.Fragments.Demo
         {
             services.AddScoped<IContentService, ContentService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMvc().AddFragments();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
+            app.UseDeveloperExceptionPage();
             app.UseStaticFiles().UseMvc(builder => builder.MapRoute("Default", "{controller=home}/{action=index}").MapFragmentRoute());
         }
     }

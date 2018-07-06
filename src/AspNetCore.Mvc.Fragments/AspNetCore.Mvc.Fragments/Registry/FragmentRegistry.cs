@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AspNetCore.Mvc.Fragments.Datasource;
 
 namespace AspNetCore.Mvc.Fragments.Registry
@@ -18,9 +19,16 @@ namespace AspNetCore.Mvc.Fragments.Registry
             _datasources.Add(datasource);
         }
 
-        public List<FragmentInfo> GetAll()
+        public async Task<List<FragmentInfo>> GetAllAsync()
         {
-            return _datasources.SelectMany(d => d.GetAll()).ToList();
+            var fragments = new List<FragmentInfo>();
+
+            foreach (var fragmentDatasource in _datasources)
+            {
+                fragments.AddRange(await fragmentDatasource.GetAllAsync());
+            }
+
+            return fragments;
         }
     }
 }

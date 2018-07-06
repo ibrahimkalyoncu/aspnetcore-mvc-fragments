@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AspNetCore.Mvc.Fragments.Datasource
 {
     public interface IFragmentDatasource
     {
-        List<FragmentInfo> GetAll();
+        Task<List<FragmentInfo>> GetAllAsync();
     }
 }

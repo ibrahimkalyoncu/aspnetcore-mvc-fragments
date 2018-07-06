@@ -1,0 +1,10 @@
+version: '3.1'
+services:
+  fragmentsdemo: 
+    build: .
+    image: fragmentsdemo
+    container_name: fragmentsdemo
+    hostname: fragmentsdemo
+    restart: always
+    ports:
+      - 57037:80

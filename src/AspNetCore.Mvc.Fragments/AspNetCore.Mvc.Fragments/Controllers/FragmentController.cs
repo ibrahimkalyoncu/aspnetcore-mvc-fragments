@@ -37,7 +37,7 @@ namespace AspNetCore.Mvc.Fragments.Controllers
         [HttpGet]
         public async Task<IActionResult> List()
         {
-            return await Task.FromResult(Json(_fragmentRegistry.GetAll()));
+            return Json(await _fragmentRegistry.GetAllAsync());
         }
 
         [HttpGet]

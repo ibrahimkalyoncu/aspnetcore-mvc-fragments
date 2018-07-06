@@ -35,6 +35,7 @@ namespace AspNetCore.Mvc.Fragments.Extensions
 
             var fragmentRegistry = new FragmentRegistry();
             fragmentRegistry.AddDatasource(new FragmentAssamblyDatasource(Assembly.GetEntryAssembly()));
+            fragmentRegistry.AddDatasource(new FragmentRemoteDatasource("http://127.0.0.1:57037/fragment"));
             mvcBuilder.Services.AddSingleton(typeof(IFragmentRegistry),fragmentRegistry);
 
             return mvcBuilder.AddMvcOptions(option => option.Filters.Add(new FragmentResultFilter()));
