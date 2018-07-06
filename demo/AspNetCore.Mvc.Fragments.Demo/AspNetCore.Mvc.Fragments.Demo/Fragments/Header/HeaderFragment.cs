@@ -5,7 +5,7 @@ using AspNetCore.Mvc.Fragments.Demo.Services;
 namespace AspNetCore.Mvc.Fragments.Demo.Fragments.Header
 {
     [FragmentOptions(
-        PlaceHolderViewName = "Fragments/Header/PlaceHolder", 
+        PlaceHolderViewName = "/Views/Fragments/Header/PlaceHolder.cshtml", 
         PostScripts = new[] { "scripts/fragments/header.js" }, 
         Styles = new[] { "styles/fragments.css", "styles/fragments/header.css", "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" })]
     public class HeaderFragment : Fragment
@@ -20,7 +20,7 @@ namespace AspNetCore.Mvc.Fragments.Demo.Fragments.Header
         public async Task<FragmentViewResult> ProcessAsync(HeaderFragmentModel model)
         {
             var tokenResponse = await _authenticationService.ResolveTokenAsync(model.Token);
-            return View("Fragments/Header/Index", new HeaderFragmentViewModel
+            return View("/Views/Fragments/Header/Index.cshtml", new HeaderFragmentViewModel
             {
                 IsAuthorized = tokenResponse.IsAuthorized,
                 UserDisplayName = tokenResponse.User?.Name,

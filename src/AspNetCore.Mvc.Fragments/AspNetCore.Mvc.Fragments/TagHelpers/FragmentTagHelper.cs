@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Newtonsoft.Json;
 
 namespace AspNetCore.Mvc.Fragments.TagHelpers
 {
@@ -48,6 +49,13 @@ namespace AspNetCore.Mvc.Fragments.TagHelpers
                 Model = Model,
                 FragmentOptions = fragmentOptions
             };
+
+#region LOG
+            ConsoleColor color = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"FRAGMENT : Executing fragment {Name}. Model : {JsonConvert.SerializeObject(fragmentContext.Model)}");
+            Console.ForegroundColor = color;
+#endregion
 
             await RenderPreAssestsAsync(fragmentContext);
 

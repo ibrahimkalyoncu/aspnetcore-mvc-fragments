@@ -5,7 +5,7 @@ using AspNetCore.Mvc.Fragments.Demo.Services;
 namespace AspNetCore.Mvc.Fragments.Demo.Fragments.Main
 {
     [FragmentOptions(
-        PlaceHolderViewName = "Fragments/Main/PlaceHolder", 
+        PlaceHolderViewName = "/Views/Fragments/Main/PlaceHolder.cshtml", 
         Styles = new[] { "/styles/main.css", "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" })]
     public class MainFragment : Fragment
     {
@@ -18,7 +18,7 @@ namespace AspNetCore.Mvc.Fragments.Demo.Fragments.Main
 
         public async Task<FragmentViewResult> ProcessAsync()
         {
-            return View("Fragments/Main/Index", new MainFragmentViewModel
+            return View("/Views/Fragments/Main/Index.cshtml", new MainFragmentViewModel
             {
                 Content = await _contentService.GetMainContentAsync()
             });

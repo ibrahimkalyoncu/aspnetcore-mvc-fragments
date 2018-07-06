@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using AspNetCore.Mvc.Fragments.Context;
+using AspNetCore.Mvc.Fragments.Datasource;
 using AspNetCore.Mvc.Fragments.Options;
 using AspNetCore.Mvc.Fragments.Renderer;
 using AspNetCore.Mvc.Fragments.Resolver;
@@ -8,6 +10,7 @@ namespace AspNetCore.Mvc.Fragments.Extensions
 {
     public class FragmentMvcBuilderOptions
     {
+        internal List<IFragmentDatasource> Datasources;
         internal Type FragmentResolverType { get; private set; }
         internal Type FragmentRendererType { get; private set; }
         internal Type ViewRendererType { get; private set; }
@@ -16,6 +19,8 @@ namespace AspNetCore.Mvc.Fragments.Extensions
 
         public FragmentMvcBuilderOptions()
         {
+            Datasources = new List<IFragmentDatasource>();
+
             FragmentResolverType = typeof(FragmentResolver);
             FragmentRendererType = typeof(FragmentRenderer);
             ViewRendererType = typeof(ViewRenderer);
@@ -23,29 +28,40 @@ namespace AspNetCore.Mvc.Fragments.Extensions
             FragmentOptionsProviderType = typeof(FragmentOptionsProvider);
         }
 
-        public void SetFragmentResolver<T>() where T : IFragmentResolver
+        public FragmentMvcBuilderOptions SetFragmentResolver<T>() where T : IFragmentResolver
         {
             FragmentResolverType = typeof(T);
+            return this;
         }
 
-        public void SetFragmentRenderer<T>() where T : IFragmentRenderer
+        public FragmentMvcBuilderOptions SetFragmentRenderer<T>() where T : IFragmentRenderer
         {
             FragmentRendererType = typeof(T);
+            return this;
         }
 
-        public void SetViewRenderer<T>() where T : IViewRenderer
+        public FragmentMvcBuilderOptions SetViewRenderer<T>() where T : IViewRenderer
         {
             ViewRendererType = typeof(T);
+            return this;
         }
 
-        public void SetFragmentContextProvider<T>() where T : IFragmentContextProvider
+        public FragmentMvcBuilderOptions SetFragmentContextProvider<T>() where T : IFragmentContextProvider
         {
             FragmentContextProviderType = typeof(T);
+            return this;
         }
 
-        public void SetFragmentOptionsProvider<T>() where T : IFragmentOptionsProvider
+        public FragmentMvcBuilderOptions SetFragmentOptionsProvider<T>() where T : IFragmentOptionsProvider
         {
             FragmentOptionsProviderType = typeof(T);
+            return this;
+        }
+
+        public FragmentMvcBuilderOptions AddDatasource(IFragmentDatasource datasource)
+        {
+            Datasources.Add(datasource);
+            return this;
         }
     }
 }

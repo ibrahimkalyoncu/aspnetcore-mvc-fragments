@@ -1,4 +1,5 @@
-﻿using AspNetCore.Mvc.Fragments.Demo.Services;
+﻿using AspNetCore.Mvc.Fragments.Datasource;
+using AspNetCore.Mvc.Fragments.Demo.Services;
 using AspNetCore.Mvc.Fragments.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -17,14 +18,22 @@ namespace AspNetCore.Mvc.Fragments.Demo
             services.AddScoped<IContentService, ContentService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddMvc().AddFragments();
+
+            services
+                .AddMvc()
+                .AddFragments(fragmentOptions => 
+                    fragmentOptions
+                        .AddDatasource(new FragmentAssamblyDatasource(typeof(Startup).Assembly))
+                        .AddDatasource(new FragmentRemoteDatasource("http://127.0.0.1:57037/fragment")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseDeveloperExceptionPage();
-            app.UseStaticFiles().UseMvc(builder => builder.MapRoute("Default", "{controller=home}/{action=index}").MapFragmentRoute());
+            app
+                .UseDeveloperExceptionPage()
+                .UseStaticFiles()
+                .UseMvc(builder => builder.MapRoute("Default", "{controller=home}/{action=index}").MapFragmentRoute());
         }
     }
 }

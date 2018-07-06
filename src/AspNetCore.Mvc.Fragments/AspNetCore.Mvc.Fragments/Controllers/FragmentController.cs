@@ -119,7 +119,7 @@ namespace AspNetCore.Mvc.Fragments.Controllers
             html = @"<style>
                 body { 
                     background-size: 40px 40px;
-                    background-image: linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px);
+                    background-image: linear-gradient(to right, #ddd 1px, transparent 1px), linear-gradient(to bottom, #ddd 1px, transparent 1px);
                 }
             </style>" + html;
 
