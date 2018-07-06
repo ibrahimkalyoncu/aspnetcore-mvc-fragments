@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AspNetCore.Mvc.Fragments.Context;
 using AspNetCore.Mvc.Fragments.Extensions;
+using AspNetCore.Mvc.Fragments.Remote;
 
 namespace AspNetCore.Mvc.Fragments.Renderer
 {
@@ -32,9 +33,19 @@ namespace AspNetCore.Mvc.Fragments.Renderer
             var processMethodInfo = fragmentType.GetMethod(Constants.ProcessAsyncMethodName);
             var parameterInfos = processMethodInfo.GetParameters();
 
-            if (processMethodInfo.Invoke(context.Fragment, GetModel(parameterInfos?.Length > 0 ? parameterInfos[0].ParameterType : null ,context)) is Task<FragmentViewResult> fragmentProcessTask)
+            if (context.Fragment is RemoteFragment)
             {
-                var fragmentViewResult = (await fragmentProcessTask);
+                if (processMethodInfo.Invoke(context.Fragment, new object[1] { context.Model ?? new object() }) is Task<string> html)
+                {
+                    return await html;
+                }
+
+                return string.Empty;
+            }
+
+            if (processMethodInfo.Invoke(context.Fragment, GetModel(parameterInfos?.Length > 0 ? parameterInfos[0].ParameterType : null, context)) is Task<FragmentViewResult> fragmentProcessTask)
+            {
+                var fragmentViewResult = await fragmentProcessTask;
                 var htmlString = await _viewRenderer.RenderAsync(fragmentViewResult.ViewName, fragmentViewResult.Model);
                 return htmlString;
             }

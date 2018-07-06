@@ -23,8 +23,9 @@ namespace AspNetCore.Mvc.Fragments.Demo
                 .AddMvc()
                 .AddFragments(fragmentOptions => 
                     fragmentOptions
-                        .AddDatasource(new FragmentAssamblyDatasource(typeof(Startup).Assembly))
-                        .AddDatasource(new FragmentRemoteDatasource("http://127.0.0.1:57037/fragment")));
+                        //.AddDatasource(new FragmentAssamblyDatasource(typeof(Startup).Assembly))
+                        .AddDatasource(new FragmentRemoteDatasource("http://127.0.0.1:57037/fragment"))
+                        );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

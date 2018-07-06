@@ -8,5 +8,6 @@ namespace AspNetCore.Mvc.Fragments.Registry
     {
         void AddDatasource(IFragmentDatasource datasource);
         Task<List<FragmentInfo>> GetAllAsync();
+        Task<FragmentInfo> FindAsync(string name);
     }
 }

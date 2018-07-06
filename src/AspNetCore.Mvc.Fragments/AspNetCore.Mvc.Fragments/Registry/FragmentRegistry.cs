@@ -30,5 +30,10 @@ namespace AspNetCore.Mvc.Fragments.Registry
 
             return fragments;
         }
+
+        public async Task<FragmentInfo> FindAsync(string name)
+        {
+            return (await GetAllAsync()).FirstOrDefault(fi => fi.Name == name);
+        }
     }
 }

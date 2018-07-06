@@ -37,9 +37,10 @@ namespace AspNetCore.Mvc.Fragments.Datasource
                 {
                     Converters = new List<JsonConverter> { new FragmentOptionsConverter() }
                 });
-
                 _fragments?.ForEach(f =>
                 {
+                    f.Source = _fragmentSourceUrl;
+                    f.IsRemote = true;
                     NormalizeUrls(f.FragmentOptions.PostScripts);
                     NormalizeUrls(f.FragmentOptions.PreScripts);
                     NormalizeUrls(f.FragmentOptions.Styles);

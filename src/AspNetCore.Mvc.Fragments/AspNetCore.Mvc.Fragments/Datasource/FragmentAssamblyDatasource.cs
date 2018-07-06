@@ -10,6 +10,7 @@ namespace AspNetCore.Mvc.Fragments.Datasource
     public class FragmentAssamblyDatasource : IFragmentDatasource
     {
         private readonly Assembly _assembly;
+        private List<FragmentInfo> _fragmentInfos;
 
         public FragmentAssamblyDatasource(Assembly assembly)
         {
@@ -20,13 +21,15 @@ namespace AspNetCore.Mvc.Fragments.Datasource
         {
             var fragmentType = typeof(Fragment);
 
-            var fragmentInfos = _assembly.GetTypes().Where(type => fragmentType.IsAssignableFrom(type)).Select(type => new FragmentInfo
+            _fragmentInfos = _fragmentInfos ?? _assembly.GetTypes().Where(type => fragmentType.IsAssignableFrom(type)).Select(type => new FragmentInfo
             {
+                IsRemote = false,
+                Source = _assembly.FullName,
                 Name = type.Name.Replace("Fragment", string.Empty),
                 FragmentOptions = type.GetCustomAttribute<FragmentOptionsAttribute>()
             }).ToList();
 
-            return await Task.FromResult(fragmentInfos);
+            return await Task.FromResult(_fragmentInfos);
         }
     }
 }

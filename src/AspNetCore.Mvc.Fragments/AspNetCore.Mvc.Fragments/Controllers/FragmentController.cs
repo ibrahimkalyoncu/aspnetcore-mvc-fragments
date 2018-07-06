@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using AspNetCore.Mvc.Fragments.Context;
 using AspNetCore.Mvc.Fragments.Options;
@@ -21,10 +22,10 @@ namespace AspNetCore.Mvc.Fragments.Controllers
         private readonly IViewRenderer _viewRenderer;
         private readonly IFragmentRegistry _fragmentRegistry;
 
-        public FragmentController(IFragmentResolver fragmentResolver, 
-            IFragmentRenderer fragmentRenderer, 
-            IFragmentOptionsProvider fragmentOptionsProvider, 
-            IViewRenderer viewRenderer, 
+        public FragmentController(IFragmentResolver fragmentResolver,
+            IFragmentRenderer fragmentRenderer,
+            IFragmentOptionsProvider fragmentOptionsProvider,
+            IViewRenderer viewRenderer,
             IFragmentRegistry fragmentRegistry)
         {
             _fragmentResolver = fragmentResolver;
@@ -49,7 +50,7 @@ namespace AspNetCore.Mvc.Fragments.Controllers
                 var expObject = new ExpandoObject();
                 foreach (var keyValuePair in Request.Query)
                 {
-                    ((IDictionary<string, Object>) expObject).Add(keyValuePair.Key, keyValuePair.Value.FirstOrDefault());
+                    ((IDictionary<string, Object>)expObject).Add(keyValuePair.Key, keyValuePair.Value.FirstOrDefault());
                 }
                 model = expObject;
             }
@@ -57,30 +58,31 @@ namespace AspNetCore.Mvc.Fragments.Controllers
             return await Task.FromResult(View(new FragmentViewModel { FragmentModel = model, FragmentName = name }));
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Content([FromRoute]string name, [FromBody]dynamic model)
-        {
-            var fragment = _fragmentResolver.Resolve(name);
-            var fragmentOptions = _fragmentOptionsProvider.GetFragmentOptions(fragment);
+        //[HttpPost]
+        //public async Task<IActionResult> Content([FromRoute]string name, [FromBody]dynamic model)
+        //{
+        //    var fragment = await _fragmentResolver.ResolveAsync(name);
+        //    var fragmentOptions = _fragmentOptionsProvider.GetFragmentOptions(fragment);
 
-            var html = await _fragmentRenderer.ExecuteAsync(new FragmentContext
-            {
-                Fragment = fragment,
-                FragmentOptions = fragmentOptions,
-                Model = model,
-                OutputStream = HttpContext.Response.Body,
-                PlaceHolderId = Guid.Empty.ToString()
-            });
+        //    var html = await _fragmentRenderer.ExecuteAsync(new FragmentContext
+        //    {
+        //        Fragment = fragment,
+        //        FragmentOptions = fragmentOptions,
+        //        Model = model,
+        //        OutputStream = HttpContext.Response.Body,
+        //        PlaceHolderId = Guid.Empty.ToString()
+        //    });
 
-            html = AddAssetsToHtml(html, fragmentOptions);
+        //    html = AddAssetsToHtml(html, fragmentOptions);
 
-            return base.Content(html, "text/html");
-        }
+        //    return base.Content(html, "text/html");
+        //}
 
         [HttpGet]
-        public new async Task<IActionResult> Content([FromRoute]string name)
+        [HttpPost]
+        public async Task<IActionResult> Content([FromRoute]string name, [FromRoute] string mode, [FromQuery][FromBody]dynamic model)
         {
-            var fragment = _fragmentResolver.Resolve(name);
+            var fragment = await _fragmentResolver.ResolveAsync(name);
             var fragmentOptions = _fragmentOptionsProvider.GetFragmentOptions(fragment);
             var fragmentType = fragment.GetType();
 
@@ -91,26 +93,33 @@ namespace AspNetCore.Mvc.Fragments.Controllers
             {
                 Fragment = fragment,
                 FragmentOptions = fragmentOptions,
-                Model = modelType == null ? null : Activator.CreateInstance(modelType.ParameterType),
+                Model = model ?? (modelType == null ? null : Activator.CreateInstance(modelType.ParameterType)),
                 OutputStream = HttpContext.Response.Body,
                 PlaceHolderId = Guid.Empty.ToString()
             });
 
-            html = AddAssetsToHtml(html, fragmentOptions);
+            if (mode == "preview")
+            {
+                html = AddAssetsToHtml(html, fragmentOptions);
+            }
 
             return base.Content(html, "text/html");
         }
 
-        public async Task<IActionResult> Placeholder([FromRoute] string name)
+        public async Task<IActionResult> Placeholder([FromRoute] string name, [FromRoute] string mode)
         {
-            var fragment = _fragmentResolver.Resolve(name);
+            var fragment = await _fragmentResolver.ResolveAsync(name);
             var fragmentOptions = _fragmentOptionsProvider.GetFragmentOptions(fragment);
 
             var placeHolderHtml = string.IsNullOrEmpty(fragmentOptions.PlaceHolderViewName)
                 ? await fragment.GetPlaceHolderHtmlAsync()
                 : await _viewRenderer.RenderAsync(fragmentOptions.PlaceHolderViewName, null);
 
-            placeHolderHtml = AddAssetsToHtml(placeHolderHtml, fragmentOptions);
+            if (mode == "preview")
+            {
+                placeHolderHtml = AddAssetsToHtml(placeHolderHtml, fragmentOptions);
+            }
+
             return base.Content(placeHolderHtml, "text/html");
         }
 

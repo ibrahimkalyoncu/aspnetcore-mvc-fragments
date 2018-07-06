@@ -1,7 +1,9 @@
-﻿namespace AspNetCore.Mvc.Fragments.Resolver
+﻿using System.Threading.Tasks;
+
+namespace AspNetCore.Mvc.Fragments.Resolver
 {
     public interface IFragmentResolver
     {
-        Fragment Resolve(string name);
+        Task<Fragment> ResolveAsync(string name);
     }
 }

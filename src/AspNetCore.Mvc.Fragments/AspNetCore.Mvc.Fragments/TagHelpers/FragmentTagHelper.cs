@@ -5,6 +5,7 @@ using System.Linq;
 using AspNetCore.Mvc.Fragments.Attributes;
 using AspNetCore.Mvc.Fragments.Context;
 using AspNetCore.Mvc.Fragments.Extensions;
+using AspNetCore.Mvc.Fragments.Options;
 using AspNetCore.Mvc.Fragments.Renderer;
 using AspNetCore.Mvc.Fragments.Resolver;
 using Microsoft.AspNetCore.Http;
@@ -21,6 +22,7 @@ namespace AspNetCore.Mvc.Fragments.TagHelpers
         private readonly IFragmentResolver _fragmentResolver;
         private readonly IViewRenderer _viewRenderer;
         private readonly IFragmentContextProvider _fragmentContextProvider;
+        private readonly IFragmentOptionsProvider _fragmentOptionsProvider;
 
         [ViewContext]
         public ViewContext ViewContext { get; set; }
@@ -28,19 +30,20 @@ namespace AspNetCore.Mvc.Fragments.TagHelpers
         public string Name { get; set; }
         public object Model { get; set; }
 
-        public FragmentTagHelper(IFragmentResolver fragmentResolver, IViewRenderer viewRenderer, IFragmentContextProvider fragmentContextProvider)
+        public FragmentTagHelper(IFragmentResolver fragmentResolver, IViewRenderer viewRenderer, IFragmentContextProvider fragmentContextProvider, IFragmentOptionsProvider fragmentOptionsProvider)
         {
             _fragmentResolver = fragmentResolver;
             _viewRenderer = viewRenderer;
             _fragmentContextProvider = fragmentContextProvider;
+            _fragmentOptionsProvider = fragmentOptionsProvider;
         }
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             output.TagName = "div";
-            Fragment fragment = _fragmentResolver.Resolve(Name);
+            Fragment fragment = await _fragmentResolver.ResolveAsync(Name);
 
-            var fragmentOptions = fragment.GetType().GetCustomAttribute(typeof(FragmentOptionsAttribute)) as FragmentOptionsAttribute;
+            var fragmentOptions = _fragmentOptionsProvider.GetFragmentOptions(fragment);
 
             var fragmentContext = new FragmentContext
             {
