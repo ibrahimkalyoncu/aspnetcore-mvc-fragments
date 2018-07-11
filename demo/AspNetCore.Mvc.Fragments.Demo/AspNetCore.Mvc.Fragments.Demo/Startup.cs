@@ -23,8 +23,8 @@ namespace AspNetCore.Mvc.Fragments.Demo
                 .AddMvc()
                 .AddFragments(fragmentOptions => 
                     fragmentOptions
-                        //.AddDatasource(new FragmentAssamblyDatasource(typeof(Startup).Assembly))
-                        .AddDatasource(new FragmentRemoteDatasource("http://127.0.0.1:57037/fragment"))
+                        .AddDatasource(new FragmentAssamblyDatasource(typeof(Startup).Assembly))
+                        //.AddDatasource(new FragmentRemoteDatasource("http://127.0.0.1:57037/fragment"))
                         );
         }
 
@@ -34,6 +34,7 @@ namespace AspNetCore.Mvc.Fragments.Demo
             app
                 .UseDeveloperExceptionPage()
                 .UseStaticFiles()
+                .UseFragments()
                 .UseMvc(builder => builder.MapRoute("Default", "{controller=home}/{action=index}").MapFragmentRoute());
         }
     }

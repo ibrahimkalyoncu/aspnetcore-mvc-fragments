@@ -21,9 +21,15 @@ namespace AspNetCore.Mvc.Fragments.Renderer
             var fragmentType = context.Fragment.GetType();
             var htmlString = await ExecuteAsync(context);
             var scriptElementId = Guid.NewGuid().ToString();
+            var contentWrapperElementId = Guid.NewGuid().ToString();
             var postScripts = context.FragmentOptions.PostScripts.Select(s => $"<script async src='{s}'></script>");
-            htmlString = $"<!-- FRAGMENT_START:{fragmentType.Name} -->{htmlString.Replace("\r\n", string.Empty).Replace("'", "\\'")}<!-- FRAGMENT_END:{fragmentType.Name} -->";
-            await context.OutputStream.WriteAsync($"<script id='{scriptElementId}'>document.getElementById('{context.PlaceHolderId}').outerHTML = '{htmlString}';var scriptElement = document.getElementById('{scriptElementId}'); scriptElement.parentNode.removeChild(scriptElement);</script>{string.Concat(postScripts)}");
+            htmlString = $"<!-- FRAGMENT_START:{fragmentType.Name} --><div style='position:absolute; top:-9999px;bottom:-9999px;left:-9999px' id='{contentWrapperElementId}'>{htmlString.Replace("\r\n", string.Empty).Replace("'", "\\'")}</div><!-- FRAGMENT_END:{fragmentType.Name} -->";
+
+            string removeScriptElementScript = $";var scriptElement = document.getElementById('{scriptElementId}'); scriptElement.parentNode.removeChild(scriptElement);";
+            string removeContentWrapperElementScript = $";var contentWrapperElement = document.getElementById('{contentWrapperElementId}'); contentWrapperElement.parentNode.removeChild(contentWrapperElement);";
+            string replaceContentScript = $";document.getElementById('{context.PlaceHolderId}').outerHTML = document.getElementById('{contentWrapperElementId}').innerHTML;";
+
+            await context.OutputStream.WriteAsync($"{htmlString}<script id='{scriptElementId}'>{replaceContentScript}{removeContentWrapperElementScript}{removeScriptElementScript}</script>{string.Concat(postScripts)}");
             await context.OutputStream.FlushAsync();
         }
 

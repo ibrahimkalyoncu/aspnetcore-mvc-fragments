@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using AspNetCore.Mvc.Fragments.Context;
 using AspNetCore.Mvc.Fragments.Options;
@@ -57,26 +56,6 @@ namespace AspNetCore.Mvc.Fragments.Controllers
 
             return await Task.FromResult(View(new FragmentViewModel { FragmentModel = model, FragmentName = name }));
         }
-
-        //[HttpPost]
-        //public async Task<IActionResult> Content([FromRoute]string name, [FromBody]dynamic model)
-        //{
-        //    var fragment = await _fragmentResolver.ResolveAsync(name);
-        //    var fragmentOptions = _fragmentOptionsProvider.GetFragmentOptions(fragment);
-
-        //    var html = await _fragmentRenderer.ExecuteAsync(new FragmentContext
-        //    {
-        //        Fragment = fragment,
-        //        FragmentOptions = fragmentOptions,
-        //        Model = model,
-        //        OutputStream = HttpContext.Response.Body,
-        //        PlaceHolderId = Guid.Empty.ToString()
-        //    });
-
-        //    html = AddAssetsToHtml(html, fragmentOptions);
-
-        //    return base.Content(html, "text/html");
-        //}
 
         [HttpGet]
         [HttpPost]

@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Linq;
-using AspNetCore.Mvc.Fragments.Attributes;
 using AspNetCore.Mvc.Fragments.Context;
 using AspNetCore.Mvc.Fragments.Extensions;
+using AspNetCore.Mvc.Fragments.Log;
 using AspNetCore.Mvc.Fragments.Options;
 using AspNetCore.Mvc.Fragments.Renderer;
 using AspNetCore.Mvc.Fragments.Resolver;
@@ -23,6 +22,7 @@ namespace AspNetCore.Mvc.Fragments.TagHelpers
         private readonly IViewRenderer _viewRenderer;
         private readonly IFragmentContextProvider _fragmentContextProvider;
         private readonly IFragmentOptionsProvider _fragmentOptionsProvider;
+        private readonly IFragmentLogger _fragmentLogger;
 
         [ViewContext]
         public ViewContext ViewContext { get; set; }
@@ -30,12 +30,17 @@ namespace AspNetCore.Mvc.Fragments.TagHelpers
         public string Name { get; set; }
         public object Model { get; set; }
 
-        public FragmentTagHelper(IFragmentResolver fragmentResolver, IViewRenderer viewRenderer, IFragmentContextProvider fragmentContextProvider, IFragmentOptionsProvider fragmentOptionsProvider)
+        public FragmentTagHelper(IFragmentResolver fragmentResolver, 
+            IViewRenderer viewRenderer, 
+            IFragmentContextProvider fragmentContextProvider, 
+            IFragmentOptionsProvider fragmentOptionsProvider,
+            IFragmentLogger fragmentLogger)
         {
             _fragmentResolver = fragmentResolver;
             _viewRenderer = viewRenderer;
             _fragmentContextProvider = fragmentContextProvider;
             _fragmentOptionsProvider = fragmentOptionsProvider;
+            _fragmentLogger = fragmentLogger;
         }
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
@@ -53,12 +58,9 @@ namespace AspNetCore.Mvc.Fragments.TagHelpers
                 FragmentOptions = fragmentOptions
             };
 
-#region LOG
-            ConsoleColor color = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"FRAGMENT : Executing fragment {Name}. Model : {JsonConvert.SerializeObject(fragmentContext.Model)}");
-            Console.ForegroundColor = color;
-#endregion
+            _fragmentContextProvider.AddContext(fragmentContext);
+
+            _fragmentLogger.Info($"Executing fragment {Name}. Model : {JsonConvert.SerializeObject(fragmentContext.Model)}");
 
             await RenderPreAssestsAsync(fragmentContext);
 
@@ -80,7 +82,6 @@ namespace AspNetCore.Mvc.Fragments.TagHelpers
                 output.Attributes.SetAttribute(Constants.HtmlIdAttribute, fragmentContext.PlaceHolderId);
                 output.TagMode = TagMode.StartTagAndEndTag;
 
-                _fragmentContextProvider.AddContext(fragmentContext);
             }
         }
 
