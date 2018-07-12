@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using AspNetCore.Mvc.Fragments.Attributes;
-using AspNetCore.Mvc.Fragments.Demo.Services;
+using AspNetCore.Mvc.Fragments.Demo.FragmentSource1.Services;
 
-namespace AspNetCore.Mvc.Fragments.Demo.Fragments.Header
+namespace AspNetCore.Mvc.Fragments.Demo.FragmentSource1.Fragments.Header
 {
     [FragmentOptions(
         PlaceHolderViewName = "/Views/Fragments/Header/PlaceHolder.cshtml", 

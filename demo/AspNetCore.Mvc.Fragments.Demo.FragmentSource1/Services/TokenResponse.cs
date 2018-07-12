@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AspNetCore.Mvc.Fragments.Demo.Services
+namespace AspNetCore.Mvc.Fragments.Demo.FragmentSource1.Services
 {
     public class TokenResponse
     {

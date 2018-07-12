@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace AspNetCore.Mvc.Fragments.Demo.Services
+namespace AspNetCore.Mvc.Fragments.Demo.FragmentSource1.Services
 {
     public interface IAuthenticationService
     {

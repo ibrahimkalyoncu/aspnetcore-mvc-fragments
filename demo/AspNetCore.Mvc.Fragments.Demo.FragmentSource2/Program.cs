@@ -1,8 +1,14 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
-namespace AspNetCore.Mvc.Fragments.Demo
+namespace AspNetCore.Mvc.Fragments.Demo.FragmentSource2
 {
     public class Program
     {
@@ -13,7 +19,6 @@ namespace AspNetCore.Mvc.Fragments.Demo
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseKestrel()
                 .UseStartup<Startup>()
                 .Build();
     }

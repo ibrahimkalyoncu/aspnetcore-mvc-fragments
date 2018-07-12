@@ -1,4 +1,4 @@
-namespace AspNetCore.Mvc.Fragments.Demo.Fragments.Header
+namespace AspNetCore.Mvc.Fragments.Demo.FragmentSource1.Fragments.Header
 {
     public class HeaderFragmentModel
     {

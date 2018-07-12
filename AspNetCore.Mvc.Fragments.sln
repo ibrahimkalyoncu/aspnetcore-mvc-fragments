@@ -5,7 +5,11 @@ VisualStudioVersion = 15.0.27004.2006
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCore.Mvc.Fragments", "src\AspNetCore.Mvc.Fragments\AspNetCore.Mvc.Fragments\AspNetCore.Mvc.Fragments.csproj", "{CCB47A8F-3A96-40A2-B74F-9C3F1258500F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCore.Mvc.Fragments.Demo", "demo\AspNetCore.Mvc.Fragments.Demo\AspNetCore.Mvc.Fragments.Demo\AspNetCore.Mvc.Fragments.Demo.csproj", "{EB62D2C9-8C6D-4764-BB7A-DC6D9A45068E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCore.Mvc.Fragments.Demo", "demo\AspNetCore.Mvc.Fragments.Demo\AspNetCore.Mvc.Fragments.Demo\AspNetCore.Mvc.Fragments.Demo.csproj", "{EB62D2C9-8C6D-4764-BB7A-DC6D9A45068E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCore.Mvc.Fragments.Demo.FragmentSource1", "demo\AspNetCore.Mvc.Fragments.Demo.FragmentSource1\AspNetCore.Mvc.Fragments.Demo.FragmentSource1.csproj", "{E3954829-7DF6-4637-A5AA-54117A97CECF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCore.Mvc.Fragments.Demo.FragmentSource2", "demo\AspNetCore.Mvc.Fragments.Demo.FragmentSource2\AspNetCore.Mvc.Fragments.Demo.FragmentSource2.csproj", "{3EBDAC76-C221-4D43-8887-15E72370F683}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{EB62D2C9-8C6D-4764-BB7A-DC6D9A45068E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB62D2C9-8C6D-4764-BB7A-DC6D9A45068E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB62D2C9-8C6D-4764-BB7A-DC6D9A45068E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3954829-7DF6-4637-A5AA-54117A97CECF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3954829-7DF6-4637-A5AA-54117A97CECF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3954829-7DF6-4637-A5AA-54117A97CECF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3954829-7DF6-4637-A5AA-54117A97CECF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EBDAC76-C221-4D43-8887-15E72370F683}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EBDAC76-C221-4D43-8887-15E72370F683}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EBDAC76-C221-4D43-8887-15E72370F683}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EBDAC76-C221-4D43-8887-15E72370F683}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

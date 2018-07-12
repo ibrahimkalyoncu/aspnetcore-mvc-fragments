@@ -1,4 +1,9 @@
-﻿using AspNetCore.Mvc.Fragments.Context;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AspNetCore.Mvc.Fragments.Context;
+using AspNetCore.Mvc.Fragments.Extensions;
 
 namespace AspNetCore.Mvc.Fragments.Filters
 {
@@ -13,7 +18,15 @@ namespace AspNetCore.Mvc.Fragments.Filters
 
         public override void OnRendering(FragmentResponseFilterContext context)
         {
-            context.ResponseHtml = $"<!-- Start -->{context.ResponseHtml}<!-- End -->";
+            if (context.FlushIndex == 0)
+            {
+                var styles = _contextProvider.GetContexts().SelectMany(fragmentContext =>
+                    fragmentContext.FragmentOptions.Styles.Select(style => $"<link  rel='stylesheet' href='{style}'/>")).Distinct();
+
+                var stylesHtmlString = string.Join(Environment.NewLine, styles);
+
+                context.ResponseHtml = context.ResponseHtml.Replace(Constants.FragmentStylesPlaceHolder, stylesHtmlString);
+            }
         }
     }
 }

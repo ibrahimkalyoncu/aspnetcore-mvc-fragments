@@ -62,8 +62,6 @@ namespace AspNetCore.Mvc.Fragments.TagHelpers
 
             _fragmentLogger.Info($"Executing fragment {Name}. Model : {JsonConvert.SerializeObject(fragmentContext.Model)}");
 
-            await RenderPreAssestsAsync(fragmentContext);
-
             var placeHolderViewName = fragmentOptions?.PlaceHolderViewName;
 
             if (fragmentOptions?.IsSync == true || fragmentOptions?.IsSyncOnAjax == true && IsAjaxRequest(ViewContext.HttpContext.Request))
@@ -81,17 +79,7 @@ namespace AspNetCore.Mvc.Fragments.TagHelpers
 
                 output.Attributes.SetAttribute(Constants.HtmlIdAttribute, fragmentContext.PlaceHolderId);
                 output.TagMode = TagMode.StartTagAndEndTag;
-
             }
-        }
-
-        private static async Task RenderPreAssestsAsync(FragmentContext fragmentContext)
-        {
-            var preScripts = fragmentContext.FragmentOptions.PreScripts.Select(s => $"<script async src='{s}'></script>");
-            var styles = fragmentContext.FragmentOptions.Styles.Select(s => $"<link  rel='stylesheet' href='{s}'/>");
-            await fragmentContext.OutputStream.WriteAsync(string.Concat(styles));
-            await fragmentContext.OutputStream.WriteAsync(string.Concat(preScripts));
-            await fragmentContext.OutputStream.FlushAsync();
         }
 
         private bool IsAjaxRequest(HttpRequest request)

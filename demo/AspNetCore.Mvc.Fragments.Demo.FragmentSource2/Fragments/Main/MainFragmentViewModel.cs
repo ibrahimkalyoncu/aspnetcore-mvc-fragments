@@ -1,4 +1,4 @@
-﻿namespace AspNetCore.Mvc.Fragments.Demo.Fragments.Main
+﻿namespace AspNetCore.Mvc.Fragments.Demo.FragmentSource2.Fragments.Main
 {
     public class MainFragmentViewModel
     {

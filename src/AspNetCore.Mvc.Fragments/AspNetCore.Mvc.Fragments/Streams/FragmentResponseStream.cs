@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using AspNetCore.Mvc.Fragments.Context;
 using AspNetCore.Mvc.Fragments.Filters;
+using AspNetCore.Mvc.Fragments.Log;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,11 +17,13 @@ namespace AspNetCore.Mvc.Fragments.Streams
         public int FlusIndex { get; private set; }
         private readonly List<FragmentResponseFilter> _responseFilters;
         private readonly IFragmentContextProvider _contextProvider;
+        private readonly IFragmentLogger _logger;
 
         public FragmentResponseStream(HttpContext context, List<FragmentResponseFilter> responseFilters, bool isGzipEnabled)
         {
             _responseFilters = responseFilters;
             _contextProvider = context.RequestServices.GetService<IFragmentContextProvider>();
+            _logger = context.RequestServices.GetService<IFragmentLogger>();
 
             if (isGzipEnabled)
             {
@@ -68,8 +71,9 @@ namespace AspNetCore.Mvc.Fragments.Streams
                 _responseFilters?.ForEach(f => f.OnRendering(filterContext));
 
                 byte[] responseBytes = Encoding.Default.GetBytes(filterContext.ResponseHtml);
+                _logger.Info($"Chunk size : {responseBytes.Length}");
                 BodyStream.Write(responseBytes, offset, responseBytes.Length);
-
+                BodyStream.FlushAsync();
                 _responseFilters?.ForEach(f => f.OnRendered(filterContext));
             }
             else

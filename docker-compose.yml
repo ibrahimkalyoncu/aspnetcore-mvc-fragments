@@ -1,10 +1,32 @@
 version: '3.1'
 services:
   fragmentsdemo: 
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile-demo
     image: fragmentsdemo
     container_name: fragmentsdemo
     hostname: fragmentsdemo
     restart: always
     ports:
-      - 57037:80
+      - 57031:80
+  fragmentsource1: 
+    build: 
+      context: .
+      dockerfile: Dockerfile-fragmentsource1
+    image: fragmentsource1
+    container_name: fragmentsource1
+    hostname: fragmentsource1
+    restart: always
+    ports:
+      - 57032:80
+  fragmentsource2: 
+    build: 
+      context: .
+      dockerfile: Dockerfile-fragmentsource2
+    image: fragmentsource2
+    container_name: fragmentsource2
+    hostname: fragmentsource2
+    restart: always
+    ports:
+      - 57033:80
