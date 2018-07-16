@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>AspNetCore.Mvc.Fragments</id>
+        <version>0.0.2</version>
+        <title>AspNetCore.Mvc.Fragments</title>
+        <authors>Halil Ibrahim Kalyoncu</authors>
+        <owners>Halil Ibrahim Kalyoncu</owners>
+        <projectUrl>https://github.com/ibrahimkalyoncu/aspnetcore-mvc-fragments</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Enables you to create scalable web application easily.</description>
+        <summary>AspNetCore.Mvc.Fragments</summary>
+        <language>en-US</language>
+        <tags>mvc core fragment</tags>
+        <dependencies>
+            <dependency id="Microsoft.AspNetCore.Mvc.Core" version="2.1.0" />
+            <dependency id="Microsoft.AspNetCore.Mvc.TagHelpers" version="2.1.0" />
+            <dependency id="Microsoft.Extensions.DependencyInjection" version="2.1.0" />
+            <dependency id="Microsoft.Extensions.DependencyModel" version="2.1.0" />
+            <dependency id="Microsoft.Extensions.FileProviders.Embedded" version="2.1.0" />
+        </dependencies>
+        <releaseNotes>
+            Preview mode fixed
+        </releaseNotes>
+    </metadata>
+    <files>
+        <file src="..\bin\Release\netcoreapp2.1\AspNetCore.Mvc.Fragments.dll" target="lib\netcoreapp2.1\AspNetCore.Mvc.Fragments.dll"/>
+    </files>
+</package>

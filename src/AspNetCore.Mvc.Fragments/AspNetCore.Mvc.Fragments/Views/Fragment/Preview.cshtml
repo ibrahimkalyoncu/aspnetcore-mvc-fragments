@@ -1,5 +1,8 @@
-﻿@model AspNetCore.Mvc.Fragments.Views.FragmentViewModel
+﻿@using AspNetCore.Mvc.Fragments.Extensions
+@model AspNetCore.Mvc.Fragments.Views.FragmentViewModel
 @addTagHelper *, AspNetCore.Mvc.Fragments
+
+@Html.FragmentStyles()
 
 <style>
     body {
