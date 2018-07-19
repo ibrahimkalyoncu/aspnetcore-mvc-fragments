@@ -3,6 +3,8 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using AspNetCore.Mvc.Fragments.Context;
 using AspNetCore.Mvc.Fragments.Filters;
 using AspNetCore.Mvc.Fragments.Log;
@@ -57,7 +59,7 @@ namespace AspNetCore.Mvc.Fragments.Streams
             BodyStream.SetLength(value);
         }
 
-        public override void Write(byte[] buffer, int offset, int count)
+        public override async Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
         {
             if (_contextProvider.GetContexts().Count > 0)
             {
@@ -72,19 +74,25 @@ namespace AspNetCore.Mvc.Fragments.Streams
 
                 byte[] responseBytes = Encoding.Default.GetBytes(filterContext.ResponseHtml);
                 _logger.Info($"Chunk size : {responseBytes.Length}");
-                BodyStream.Write(responseBytes, offset, responseBytes.Length);
-                BodyStream.FlushAsync();
+                await BodyStream.WriteAsync(responseBytes, offset, responseBytes.Length, cancellationToken);
+                await FlushAsync(cancellationToken);
                 _responseFilters?.ForEach(f => f.OnRendered(filterContext));
             }
             else
             {
-                BodyStream.Write(buffer, offset, count);
+                await BodyStream.WriteAsync(buffer, offset, count, cancellationToken);
             }
         }
 
-        protected override void Dispose(bool disposing)
+        public override void Write(byte[] buffer, int offset, int count)
+        {
+            BodyStream.Write(buffer, offset, count);
+        }
+
+        public override void Close()
         {
             _responseFilters?.ForEach(f => f.OnComplete());
+            base.Close();
         }
 
         public override bool CanRead => BodyStream.CanRead;

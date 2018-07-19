@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCore.Mvc.Fragments.Http;
 using AspNetCore.Mvc.Fragments.Registry;
 using AspNetCore.Mvc.Fragments.Remote;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace AspNetCore.Mvc.Fragments.Resolver
 {
@@ -10,11 +12,15 @@ namespace AspNetCore.Mvc.Fragments.Resolver
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IFragmentRegistry _fragmentRegistry;
+        private readonly IMemoryCache _memoryCache;
+        private readonly IHttpClientProvider _httpClientProvider;
 
-        public FragmentResolver(IServiceProvider serviceProvider, IFragmentRegistry fragmentRegistry)
+        public FragmentResolver(IServiceProvider serviceProvider, IFragmentRegistry fragmentRegistry, IMemoryCache memoryCache, IHttpClientProvider httpClientProvider)
         {
             _serviceProvider = serviceProvider;
             _fragmentRegistry = fragmentRegistry;
+            _memoryCache = memoryCache;
+            _httpClientProvider = httpClientProvider;
         }
 
         public virtual async Task<Fragment> ResolveAsync(string name)
@@ -25,7 +31,7 @@ namespace AspNetCore.Mvc.Fragments.Resolver
 
                 if (fragmentInfo.IsRemote)
                 {
-                    return new RemoteFragment(fragmentInfo);
+                    return new RemoteFragment(fragmentInfo, _httpClientProvider, _memoryCache);
                 }
 
                 var fragmentName = $"{name}{Constants.FragmentTypeSuffix}";

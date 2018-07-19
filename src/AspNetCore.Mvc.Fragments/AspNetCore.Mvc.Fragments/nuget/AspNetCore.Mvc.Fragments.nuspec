@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>AspNetCore.Mvc.Fragments</id>
-        <version>0.0.2</version>
+        <version>0.0.4</version>
         <title>AspNetCore.Mvc.Fragments</title>
         <authors>Halil Ibrahim Kalyoncu</authors>
         <owners>Halil Ibrahim Kalyoncu</owners>
@@ -20,7 +20,7 @@
             <dependency id="Microsoft.Extensions.FileProviders.Embedded" version="2.1.0" />
         </dependencies>
         <releaseNotes>
-            Preview mode fixed
+            HttpClient usage refactored
         </releaseNotes>
     </metadata>
     <files>

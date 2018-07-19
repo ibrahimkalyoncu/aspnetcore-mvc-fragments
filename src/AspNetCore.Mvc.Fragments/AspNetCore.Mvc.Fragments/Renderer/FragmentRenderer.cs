@@ -30,7 +30,6 @@ namespace AspNetCore.Mvc.Fragments.Renderer
             string replaceContentScript = $";document.getElementById('{context.PlaceHolderId}').outerHTML = document.getElementById('{contentWrapperElementId}').innerHTML;";
 
             await context.OutputStream.WriteAsync($"{htmlString}<script id='{scriptElementId}'>{replaceContentScript}{removeContentWrapperElementScript}{removeScriptElementScript}</script>{string.Concat(postScripts)}");
-            await context.OutputStream.FlushAsync();
         }
 
         public async Task<string> ExecuteAsync(FragmentContext context)

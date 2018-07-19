@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using System.Linq;
 using AspNetCore.Mvc.Fragments.Context;
-using AspNetCore.Mvc.Fragments.Extensions;
 using AspNetCore.Mvc.Fragments.Log;
 using AspNetCore.Mvc.Fragments.Options;
 using AspNetCore.Mvc.Fragments.Renderer;
